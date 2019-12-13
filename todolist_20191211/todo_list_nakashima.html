@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+​
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="filters" id="todo">
+
+
+
+
+        <!-- 前の状態 -->
+        <!-- <label><input type="radio" name="switching" v-model="checked" value="晴れ">ALL(全て)</label>
+        <label><input type="radio" name="switching" v-model="checked" value="曇り">Completed(完了)</label>
+        <label><input type="radio" name="switching" v-model="checked" value="雨">Running(実行中)</label>
+        <p>{{ checked }}</p> -->
+
+        <!-- 修正した書き方 -->
+        <!-- <label v-for="label in options"> -->
+        <label>
+            <!-- ラジオ -->
+            <!-- <input type="radio" name="switching" v-model="current" v-bind:value="label.value">{{label.label}} -->
+
+            <!-- ボタン -->
+            <!-- エラーが出る -->
+            <!-- <button class="state" name="switching" @click="computedTodos(item)" v-bind:value="label.value">{{label.label}}</button> -->
+            <!--  -->
+            <button class="state" name="switching" @click="computedTodos()">全て</button>
+            <button class="state" name="switching" @click="computedTodos()">完了</button>
+            <button class="state" name="switching" @click="computedTodos()">作業中</button>
+
+        </label>
+
+
+        <ul class="list">
+
+            <li v-for="(item,index) in tasks[0].todoList">
+                <span class="comment">{{ item }}</span>
+
+                <button class="status" @click="workingTodo(index)">作業中</button>
+                <button class="status" @click="completedTodo(index)">完了</button>
+                <button class="delete" @click="remove(index)">削除</button>
+            </li>
+        </ul>
+        <h1>新しい作業の追加</h1>
+        <p>コメント
+            <input type="text" class="text-input" v-model="inputData" />
+            <button @click="addtodo">追加</button>
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+
+        var vm = new Vue({
+            el: "#todo",
+            data: {
+                inputData: "",
+                options: [
+                    { value: -1, label: '全て' },
+                    { value: 0, label: '作業中' },
+                    { value: 1, label: '完了' },
+                ],
+                current: -1,
+                tasks: [{
+                    state: 0, //作業中
+                    todoList: [
+
+                    ],
+                },
+                {
+                    // state: 1, //完了
+                    todoList: [
+
+                    ],
+                }
+                ]
+            },
+            methods: {
+                addtodo: function () {
+                    console.log("追加");
+
+                    // オブジェクトを追加する場合
+                    // let item = {
+                    //     comment: this.inputData
+                    // }
+                    let item = this.inputData;
+                    this.tasks[0].todoList.push(item);
+                    this.inputData = "";
+                },
+                remove: function (index) {
+                    this.tasks[0].todoList.splice(index, 1);
+                },
+                completedTodo: function (index) {
+                    console.log("完了に変更");
+
+                    var complist = this.tasks[1].todoList;
+                    complist.push(this.tasks[0].todoList[0]);
+                    //    this.tasks[1].todoList.push(this.tasks[0].todoList[0]);
+                    this.tasks[0].todoList.splice(index, 1);
+                },
+                workingTodo: function (index) {
+                    if (this.tasks[1].todoList.length > 0) {
+                        console.log("作業中に変更");
+                        this.tasks[0].todoList.push(this.tasks[1].todoList[0]);
+                        this.tasks[1].todoList.splice(index, 1);
+                    }
+                }, computedTodos: function () {
+                    if (this.options[0].value == -1) {
+                        var complist = this.tasks[0].todoList;
+                        
+                        console.log("全体")
+
+                    }
+                },
+
+
+            }
+        });
+
+    </script>
+</body>
+​
+
+</html>
